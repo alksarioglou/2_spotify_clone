@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import usePlayer from "@/hooks/usePlayer";
 import { twMerge } from "tailwind-merge";
 import { RxCaretLeft, RxCaretRight } from "react-icons/rx";
 import { HiHome } from "react-icons/hi";
@@ -23,6 +24,7 @@ const Header: React.FC<HeaderProps> = ({
     children,
     className 
 }) => {
+    const player = usePlayer();
     const authModal = useAuthModal();
     const router = useRouter();
 
@@ -32,7 +34,7 @@ const Header: React.FC<HeaderProps> = ({
     const handleLogout = async () => {
         // Handle logout in the future
         const { error } = await supabaseClient.auth.signOut();
-        // TODO: refresh any playing songs
+        player.reset();
         router.refresh();
 
         if (error) {
